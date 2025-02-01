@@ -1,14 +1,15 @@
-resource "aws_instance" "expense"{
-  count = 3
+resource "aws_instance" "this" {
+  for_each = var.instances #terraform will give us a variable called each
   ami                    = "ami-09c813fb71547fc4f"
   vpc_security_group_ids = [aws_security_group.allow_tls.id]
-  instance_type          = "t3.micro"
+  instance_type          = each.value
   tags = {
-    Name    = var.instances[count.index]
+    Name    = each.key
+    Purpose = "terraform-practice"
   }
 }
 
-resource "aws_security_group" "allow_tls"{
+resource "aws_security_group" "allow_tls" {
   name        = "allow_tls"
   description = "Allow TLS inbound traffic and all outbound traffic"
 
@@ -29,4 +30,9 @@ resource "aws_security_group" "allow_tls"{
   tags = {
     Name = "allow_tls"
   }
+}
+
+output "ec2_info" {
+  value = aws_instance.this
+  
 }
