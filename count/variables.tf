@@ -10,3 +10,12 @@ variable "zone_id" {
 variable "domain_name" {
     default = "gurudevops.online"
 }
+
+variable "common_tags" {
+    type = map 
+    default = {
+        project = "expense"
+        Environment = "dev"
+    }
+  
+}
