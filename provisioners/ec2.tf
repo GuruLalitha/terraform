@@ -26,6 +26,13 @@ resource "aws_instance" "this" {
      ]
     
   }
+  provisioner "remote-exec" {
+    when = destroy
+    inline = [ 
+      "sudo systemctl stop nginx"
+    ]
+    
+  }
 }
 
 resource "aws_security_group" "allow_tls" {
